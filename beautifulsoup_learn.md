@@ -47,3 +47,33 @@ Comment  字符串中的注释部分
 XML <> < / >
 JSON[{key: value}]
 YAML  缩进
+
+
+##信息提取
+
+    <>.find_all(name,attrs,recursive,string,**kwargs)
+返回一个列表类型，储存查找结果
+
+name:
+```py
+import requests
+from bs4 import BeautifulSoup
+
+
+url = 'https://python123.io/ws/demo.html'
+r = requests.get(url)
+demo = r.text
+# 获得文本后先在BS库中解析
+soup = BeautifulSoup(demo, 'html.parser')
+soup.find_all('a')
+soup.find_all(['a','b'])
+#可输入正则表达式
+```
+attrs:  检索属性值
+recursive : 默认情况True ，遍历子孙节点
+string： 检索字符串
+<>()   =  <>.find_all()
+<>.find()  只返回一个结果，为字符串格式
+
+
+中文空格 chr(12288)
