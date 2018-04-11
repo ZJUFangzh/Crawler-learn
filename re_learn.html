@@ -1105,81 +1105,88 @@ MathJax.Hub.Config({
   showProcessingMessages: false
 });
 </script>
-<title>beautifulsoup_learn</title></head><body><article class="markdown-body"><h1 id="beautifulsoup"><a name="user-content-beautifulsoup" href="#beautifulsoup" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>BeautifulSoup</h1>
-<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<title>re_learn</title></head><body><article class="markdown-body"><h1 id="re"><a name="user-content-re" href="#re" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>re</h1>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">re</span>
 </pre></div>
 
 
-<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>解析器</h2>
-<p>html.parser<br />
-lxml  速度快<br />
-xml<br />
-html5lib(pip 这个库)</p>
-<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>基本元素</h2>
-<p>Tag &lt;&gt; &lt; / &gt;   soup.a<br />
-Name &lt; p &gt; &lt; / p &gt; &lsquo;p&rsquo;is name &lt; tag &gt; .name<br />
-Attributes  属性，字典形式，&lt; tag &gt; .attrs &lt; p class....... &gt;<br />
-NavigableString  非属性字符串 &lt; tag &gt; .string<br />
-Comment  字符串中的注释部分</p>
-<h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>下行遍历</h2>
-<p>.contents      子节点列表，所有儿子节点<br />
-.children  子节点迭代，循环遍历儿子节点<br />
-.descendants   子孙节点 循环遍历</p>
-<div class="codehilite"><pre>soup = BeautifulSoup(demo, &#39;html.parser&#39;)
+<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>常用字符</h2>
+<div class="codehilite"><pre>.  任何单个字符
+[]  字符集 [abc]   a b  c  单个字符  [a-z]
+[^]  非字符集 [^abc] 异或
+*   0次或多次字符
++   一次或多次
+？   0次或1次
+|       或
+{m}    m次扩展
+{m,n}   m -- n 次扩展   ab{1,2}c     abc abbc
+^      匹配字符串开头    ^abc     表示 abc开头
+$     结尾              abc$       abc结尾
+()  分组     内部只能用 |
+\d     数字，  == [0-9]
+\w   单词   ==[A-Za-z0-9_]
 </pre></div>
 
 
-<h2 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>上行遍历</h2>
-<p>.parent<br />
-.parents  所有先辈，可以循环遍历</p>
-<h2 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>平行遍历,同一个父节点下</h2>
-<p>.next_sibling   下一个平行节点，有可能不是tag类型<br />
-.previous_sibling  上一个平行节点<br />
-.next_siblings<br />
-.previous_siblings</p>
-<h2 id="_6"><a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>信息标记</h2>
-<p>XML &lt;&gt; &lt; / &gt;<br />
-JSON[{key: value}]<br />
-YAML  缩进</p>
-<h2 id="_7"><a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>信息提取</h2>
-<div class="codehilite"><pre>&lt;&gt;.find_all(name,attrs,recursive,string,**kwargs)
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>经典正则</h2>
+<div class="codehilite"><pre>^[A-Za-z]+$    由26个字母组成字符串
+^[A-Za-z0-9]+$  由26个字母和数字组成字符串
+^-?\d+$        整数形式的字符串
+^[0-9]*[1-9][0-9]*$   正整数形式
+[1-9]\d{5}      国内6位邮政编码
+[\u4e00-\u9fa5]    中文字符
+\d{3}-\d{8}|\d{4}-\d{7}   国内电话号码
 </pre></div>
 
 
-<p>返回一个列表类型，储存查找结果</p>
-<p>name:<br />
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-
-
-<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;https://python123.io/ws/demo.html&#39;</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">demo</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
-<span class="c"># 获得文本后先在BS库中解析</span>
-<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">demo</span><span class="p">,</span> <span class="s">&#39;html.parser&#39;</span><span class="p">)</span>
-<span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
-<span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">])</span>
-<span class="c">#可输入正则表达式</span>
-</pre></div>
-<br />
-attrs:  检索属性值<br />
-recursive : 默认情况True ，遍历子孙节点<br />
-string： 检索字符串<br />
-&lt;&gt;()   =  &lt;&gt;.find_all()<br />
-&lt;&gt;.find()  只返回一个结果，为字符串格式</p>
-<p>中文空格 chr(12288)</p>
-<p>CSS选择器<br />
-<div class="codehilite"><pre><span class="n">soup</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">&#39;.panel .panel-heading&#39;</span><span class="p">)</span><span class="c">#class属性要加.</span>
-<span class="n">soup</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">&#39;ul li&#39;</span><span class="p">)</span>
-<span class="n">soup</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">&#39;#list-2 .element&#39;</span><span class="p">)</span>  <span class="c">#  id前面要加#</span>
-</pre></div>
-</p>
-<p>获取属性</p>
-<div class="codehilite"><pre>ul[&#39;id&#39;]
-ul.attrs[&#39;id&#39;]
+<p>r&rsquo;text&rsquo; 转义<br />
+也可以用\来转义，但是太过繁琐</p>
+<h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>主要函数</h2>
+<div class="codehilite"><pre>re.search()
+re.match()
+re.findall()
+re.split()
+re.finditer()
+re.sub()
 </pre></div>
 
 
-<p>获取内容</p>
-<div class="codehilite"><pre>ul.get_text()
-</pre></div></article></body></html>
+<h3 id="researchpatternstringflags0"><a name="user-content-researchpatternstringflags0" href="#researchpatternstringflags0" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>re.search(pattern,string,flags=0)</h3>
+<p>返回第一个位置 为 match 对象<br />
+- pattern 正则表达式<br />
+- string  待匹配<br />
+- flags<br />
+    - re.I    忽略大小写<br />
+    - re.M   ^ 能匹配 每行开始部分<br />
+    - re.S re.DOTALL   . 可以匹配所有字符，默认匹配除换行符外</p>
+<p>re.match()  从起始位置进行匹配<br />
+re.findall()   返回列表，匹配所有</p>
+<p>re.split(pattern,string,maxsplit=0,,flags=0)<br />
+re.finditer(pattern,string,flags=0)   返回迭代类型  可以用for ,返回match</p>
+<p>re.sub(pattern,repl,string,count=0,flags=0)  替换所有正则表达式子串，返回替代后的字符串<br />
+- repl  替换的字符串<br />
+- count  匹配最大次数</p>
+<div class="codehilite"><pre>rst = re.search(r&#39;表达式&#39;,string)  一次性操作
+等价于
+pat = re.compile(r&#39;表达式,flag=0)    先编译，后可以多次操作，编译后才算是正则表达式
+rst = pat.serch(string)
+</pre></div>
+
+
+<h3 id="match"><a name="user-content-match" href="#match" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>match 对象</h3>
+<ul>
+<li>
+<p><strong>属性</strong><br />
+    .string  待匹配文本<br />
+    .re      正则表达式<br />
+    .pos     搜索文本的开始位置<br />
+    .endpos  搜索的结束位置</p>
+</li>
+<li>
+<p><strong>方法</strong><br />
+    .group(0)  获得字符串<br />
+    .start()  匹配到的原始字符串的开始<br />
+    .end()<br />
+    .span()   返回开始和结束位置</p>
+</li>
+</ul></article></body></html>

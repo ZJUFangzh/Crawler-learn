@@ -96,3 +96,4 @@ re.sub(pattern,repl,string,count=0,flags=0)  替换所有正则表达式子串�
 ??
 {m,n}?
 
+    tool.oschina.net/regix/#

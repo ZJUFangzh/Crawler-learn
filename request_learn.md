@@ -16,8 +16,12 @@ r.encoding
 # 备选编码方式,根据内容部分，更加准确
 r.apparent_encoding
 
-# 响应内容的二进制形式
+# 响应内容的二进制形式，图片之类的
 r.content
+
+
+r.json
+r.cookies
 ```
 
 ##异常处理
@@ -73,11 +77,11 @@ headers：HTTP定制头
 cookies
 auth：元组
 files：字典类型，传输文件
-timeout：超时时间
+timeout：超时时间,为秒
 prixies：字典类型，代理服务器
 allow_redirects：重定向
 stream：获取内容是否下载
-verify：SSL认证
+verify：SSL认证 ，默认为True  如果改为False可以跳过验证，如12306，也可以用cert指定一个证书
 cert：ssl路径
 
 
@@ -108,7 +112,21 @@ requests.delete(url, **kwargs)
 url/robots.txt
 
 
+测试网址
+    http://httpbin.org/
 
 
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75 Safari/537.36', }
 
+Session可变成同一个对象进行多次请求
+    s = requests.Session()    
+    r = s.get()
+
+
+安装socks代理
+
+```
+pip install requests[socks]
+```
 

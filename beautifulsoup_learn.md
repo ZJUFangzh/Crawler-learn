@@ -5,7 +5,7 @@
 
 ## 解析器
 html.parser
-lxml
+lxml  速度快,推荐使用
 xml
 html5lib(pip 这个库)
 
@@ -77,3 +77,25 @@ string： 检索字符串
 
 
 中文空格 chr(12288)
+
+
+CSS选择器
+```py
+soup.select('.panel .panel-heading')#class属性要加.
+soup.select('ul li')
+soup.select('#list-2 .element')  #  id前面要加#
+
+
+```
+
+
+获取属性
+
+    ul['id']
+    ul.attrs['id']
+
+
+
+获取内容
+
+    ul.get_text()
